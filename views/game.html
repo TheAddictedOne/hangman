@@ -5,9 +5,29 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Game</title>
+    <style>
+        .flex {
+            display: flex;
+        }
+    </style>
 </head>
 <body>
     <h1>Mode {{ level }}</h1>
     <h2>{{ word }}</h2>
+    <div>
+        <h1>Letter already used</h1>
+        <div class="flex">
+            {% for l in letters %}
+                <div>{{ l }}</div>
+            {% else %}
+                <div>None</div>
+            {% endfor %}
+        </div>
+    </div>
+    <form method="post" action="/game">
+        <input id="letter" name="letter" type="text" maxlength="1">
+        <label for="letter">Letter</label>
+        <button type="submit">Send</button>
+    </form>
 </body>
 </html>
