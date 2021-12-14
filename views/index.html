@@ -1,0 +1,28 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Hangman Web</title>
+    </head>
+
+    <body>
+        <h1>Hangman Web</h1>
+        <h2>Choose the difficulty</h2>
+        <form method="get" action="/game">
+            <div>
+                <input id="easy" name="level" type="radio" value="easy" checked>
+                <label for="easy">Easy</label>
+            </div>
+            <div>
+                <input id="medium" name="level" type="radio" value="medium">
+                <label for="medium">Medium</label>
+            </div>
+            <div>
+                <input id="hard" name="level" type="radio" value="hard">
+                <label for="hard">Hard</label>
+            </div>
+            <button type="submit">Play!</button>
+        </form>
+    </body>
+</html>
