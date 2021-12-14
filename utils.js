@@ -6,9 +6,9 @@ function getRandomWord(level, callback) {
   console.log(filename);
 
   fs.readFile(filename, (err, data) => {
-    console.log("reading file...");
-    console.log(data);
-    callback(data.toString().split("\n"));
+    const words = data.toString().split("\n");
+    const num = Math.floor(Math.random() * words.length);
+    callback(words[num]);
   });
 }
 

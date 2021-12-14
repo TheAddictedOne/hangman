@@ -8,7 +8,7 @@ const port = 3000;
 
 const global = {
   level: "",
-  words: [],
+  word: "",
 };
 
 nunjucks.configure("views", {
@@ -22,9 +22,9 @@ app.get("/", function (req, res) {
 
 app.get("/game", function (req, res) {
   global.level = req.query.level;
-  getRandomWord(req.query.level, (words) => {
-    global.words = words;
-    res.render("game.html", { level: global.level, words: global.words });
+  getRandomWord(req.query.level, (word) => {
+    global.word = word;
+    res.render("game.html", { ...global });
   });
 });
 
