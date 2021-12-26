@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"fmt"
 	"math/rand"
 	"net/http"
 	"os"
@@ -46,7 +47,7 @@ func selectLevelHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func gameHandler(w http.ResponseWriter, r *http.Request) {
+func playHandler(w http.ResponseWriter, r *http.Request) {
 	page := template.Must(template.ParseFiles("views/game.html"))
 
 	switch r.Method {
@@ -59,6 +60,18 @@ func gameHandler(w http.ResponseWriter, r *http.Request) {
 		page.Execute(w, state)
 
 	case http.MethodPost:
+		r.ParseForm()
+		letter := r.FormValue("letter")
+
+		for i, v := range state.Letters {
+			if v.Value == letter {
+				state.Letters[i] = Letter{Value: v.Value, Used: true}
+				break
+			}
+		}
+
+		fmt.Println(state.Letters)
+
 		page.Execute(w, state)
 	}
 }
@@ -108,6 +121,6 @@ func main() {
 
 	http.HandleFunc("/", homeHandler)
 	http.HandleFunc("/select-level", selectLevelHandler)
-	http.HandleFunc("/play", gameHandler)
+	http.HandleFunc("/play", playHandler)
 	http.ListenAndServe(":8080", nil)
 }
