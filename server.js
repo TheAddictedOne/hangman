@@ -2,7 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const nunjucks = require("nunjucks");
 
-const { getRandomWord } = require("./utils.js");
+const { getRandomWord, wordToFind, getAllLetters } = require("./utils.js");
 
 const app = express();
 const port = 3000;
@@ -10,7 +10,9 @@ const port = 3000;
 const state = {
   level: "",
   word: "",
-  letters: [],
+  wordToFind: "",
+  letters: getAllLetters(),
+  errors: 0,
 };
 
 nunjucks.configure("views", {
@@ -18,6 +20,7 @@ nunjucks.configure("views", {
   express: app,
 });
 
+app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get("/", function (req, res) {
@@ -25,19 +28,31 @@ app.get("/", function (req, res) {
 });
 
 app.get("/game", function (req, res) {
-  state.level = req.query.level;
-  getRandomWord(req.query.level, (word) => {
+  const { level } = req.query;
+
+  state.level = level;
+  getRandomWord(level, (word) => {
     state.word = word;
+    state.wordToFind = wordToFind(word);
     res.render("game.html", { ...state });
   });
 });
 
 app.post("/game", function (req, res) {
-  console.log("checking ", req.body.letter, " in ", state.letters);
-  if (!state.letters.includes(req.body.letter)) {
-    state.letters.push(req.body.letter);
+  const { letter } = req.body;
+
+  if (!state.word.includes(letter)) {
+    state.errors++;
   }
-  res.render("game.html", { ...state });
+
+  state.letters.find((l) => l === letter).used = true;
+
+  console.log("new:", state.letters);
+
+  res.render("game.html", {
+    ...state,
+    wordToFind: wordToFind(state.word, state.letters),
+  });
 });
 
 app.listen(port, () => {

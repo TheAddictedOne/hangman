@@ -5,22 +5,30 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Game</title>
-    <style>
-        .flex {
-            display: flex;
-        }
-    </style>
+    <link rel="stylesheet" href="/hangman.css">
 </head>
 <body>
+    <a href="/">Back to level selection</a>
+
     <h1>Mode {{ level }}</h1>
     <h2>{{ word }}</h2>
     <div>
         <h1>Letter already used</h1>
         <div class="flex">
-            {% for l in letters %}
+            {% for letter in letters %}
+                {% if letter.used %}
+                    <div class="used">{{ letter }}</div>
+                {% else %}
+                    <div>{{ letter }}</div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+    <div>
+        <h1>Game to find (errors: {{ errors }})</h1>
+        <div class="flex">
+            {% for l in wordToFind %}
                 <div>{{ l }}</div>
-            {% else %}
-                <div>None</div>
             {% endfor %}
         </div>
     </div>
