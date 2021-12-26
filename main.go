@@ -2,7 +2,6 @@ package main
 
 import (
 	"bufio"
-	"fmt"
 	"math/rand"
 	"net/http"
 	"os"
@@ -64,9 +63,11 @@ func playHandler(w http.ResponseWriter, r *http.Request) {
 		r.ParseForm()
 		letter := r.FormValue("letter")
 		word := strings.ToLower(state.CompleteWord)
+		isError := true
 
 		for i, v := range word {
 			if string(v) == letter {
+				isError = false
 				state.CurrentWord[i] = letter
 			}
 		}
@@ -78,7 +79,9 @@ func playHandler(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 
-		fmt.Println(state.Letters)
+		if isError {
+			state.Errors++
+		}
 
 		page.Execute(w, state)
 	}
