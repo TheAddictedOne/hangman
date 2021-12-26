@@ -13,22 +13,26 @@
     <h1>Mode {{.Level}}</h1>
     <h2>{{.CompleteWord}}</h2>
     <div>
-        <h1>Letter already used</h1>
-        <div class="flex">
+        <h1>Letters</h1>
+        <div class="flex monospace">
             {{range .Letters}}
                 {{if .Used}}
-                    <div class="used">{{.Value}}</div>
+                    <div class="letter used">{{.Value}}</div>
                 {{else}}
-                    <div>{{.Value}}</div>
+                    <div class="letter">{{.Value}}</div>
                 {{end}}
             {{end}}
         </div>
     </div>
     <div>
         <h1>Game to find (errors: {{.Errors}})</h1>
-        <div class="flex">
+        <div class="flex monospace">
             {{range .CurrentWord}}
-                <div>{{.}}</div>
+                {{if eq . " " }}
+                    <div class="space">{{.}}</div>
+                {{else}}
+                    <div class="tofind">{{.}}</div>
+                {{end}}
             {{end}}
         </div>
     </div>

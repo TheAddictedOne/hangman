@@ -1,5 +1,6 @@
 body {
     font-family: sans-serif;
+    font-size: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -7,18 +8,17 @@ body {
 
 .flex {
     display: flex;
+    flex-wrap: wrap;
 }
 
 .flex > div {
-    display: flex;
+    margin: 10px;
+    padding: 10px;
     width: 20px;
     height: 20px;
+    display: flex;
     justify-content: center;
     align-items: center;
-}
-
-.used {
-    color: #ccc;
 }
 
 .buttons {
@@ -41,4 +41,30 @@ body {
 
 .green {
     background-color: #4caf50;
+}
+
+.monospace {
+    font-family: monospace;
+}
+
+.letter {
+    border: 1px solid black;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    box-shadow: 4px 4px #aaa;
+}
+
+.used {
+    border: 1px solid #eee;
+    color: #eee;
+    box-shadow: 4px 4px #eee;
+}
+
+.tofind {
+    border: 1px solid black;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    box-shadow: 4px 4px #aaa;
 }
