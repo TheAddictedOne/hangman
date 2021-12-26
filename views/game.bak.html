@@ -10,26 +10,26 @@
 <body>
     <a href="/">Back to level selection</a>
 
-    <h1>Mode {{.Level}}</h1>
-    <h2>{{.CompleteWord}}</h2>
+    <h1>Mode {{ level }}</h1>
+    <h2>{{ word }}</h2>
     <div>
         <h1>Letter already used</h1>
         <div class="flex">
-            {{range .Letters}}
-                {{if .Used}}
-                    <div class="used">{{.Value}}</div>
-                {{else}}
-                    <div>{{.Value}}</div>
-                {{end}}
-            {{end}}
+            {% for letter in letters %}
+                {% if letter.used %}
+                    <div class="used">{{ letter }}</div>
+                {% else %}
+                    <div>{{ letter }}</div>
+                {% endif %}
+            {% endfor %}
         </div>
     </div>
     <div>
-        <h1>Game to find (errors: {{.Errors}})</h1>
+        <h1>Game to find (errors: {{ errors }})</h1>
         <div class="flex">
-            {{range .CurrentWord}}
-                <div>{{.}}</div>
-            {{end}}
+            {% for l in wordToFind %}
+                <div>{{ l }}</div>
+            {% endfor %}
         </div>
     </div>
     <form method="post" action="/game">

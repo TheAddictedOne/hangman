@@ -3,31 +3,17 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Hangman Web</title>
+        <title>Hangman</title>
         <link rel="stylesheet" href="/static/hangman.css">
     </head>
 
     <body>
-        <h1>Hangman Web</h1>
-        <h2>Choose the difficulty</h2>
-        <form method="get" action="/game">
-            <div>
-                <input id="easy" name="level" type="radio" value="easy">
-                <label for="easy">Easy</label>
-            </div>
-            <div>
-                <input id="medium" name="level" type="radio" value="medium">
-                <label for="medium">Medium</label>
-            </div>
-            <div>
-                <input id="hard" name="level" type="radio" value="hard">
-                <label for="hard">Hard</label>
-            </div>
-            <div>
-                <input id="jrpgs" name="level" type="radio" value="jrpgs" checked>
-                <label for="jrpgs">JRPGS</label>
-            </div>
-            <button type="submit">Play!</button>
-        </form>
+        <h1>Hangman</h1>
+
+        <h2>Current level: {{.Level}}</h2>
+        <div class="buttons">
+            <a class="button grey" href="/select-level">Change level</a>
+            <a class="button green" href="/play">Play!</a>
+        </div>
     </body>
 </html>

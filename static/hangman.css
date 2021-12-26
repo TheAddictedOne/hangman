@@ -20,3 +20,25 @@ body {
 .used {
     color: #ccc;
 }
+
+.buttons {
+    display: flex
+}
+
+.button {
+    margin: 0 20px;
+    border: 2px solid black;
+    padding: 10px 20px;
+    color: black;
+    font-weight: bold;
+    text-decoration: none;
+    box-shadow: 4px 4px #aaa;
+}
+
+.grey {
+    background-color: #ccc;
+}
+
+.green {
+    background-color: #4caf50;
+}
