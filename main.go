@@ -6,6 +6,7 @@ import (
 	"math/rand"
 	"net/http"
 	"os"
+	"strings"
 	"text/template"
 	"time"
 )
@@ -56,12 +57,19 @@ func playHandler(w http.ResponseWriter, r *http.Request) {
 		state.CompleteWord = word
 		state.Letters = initializeLetters()
 		state.Errors = 0
-		state.CurrentWord = initializeCurrentWord(len(word))
+		state.CurrentWord = initializeCurrentWord(word)
 		page.Execute(w, state)
 
 	case http.MethodPost:
 		r.ParseForm()
 		letter := r.FormValue("letter")
+		word := strings.ToLower(state.CompleteWord)
+
+		for i, v := range word {
+			if string(v) == letter {
+				state.CurrentWord[i] = letter
+			}
+		}
 
 		for i, v := range state.Letters {
 			if v.Value == letter {
@@ -103,11 +111,15 @@ func initializeLetters() []Letter {
 	return letters
 }
 
-func initializeCurrentWord(n int) []string {
+func initializeCurrentWord(w string) []string {
 	var s []string
 
-	for i := 0; i < n; i++ {
-		s = append(s, "_")
+	for i := 0; i < len(w); i++ {
+		if w[i] == ' ' {
+			s = append(s, " ")
+		} else {
+			s = append(s, "_")
+		}
 	}
 
 	return s
