@@ -21,7 +21,7 @@ type State struct {
 	CompleteWord string
 	Letters      []Letter
 	Errors       int
-	CurrentWord  string
+	CurrentWord  []string
 }
 
 func homeHandler(w http.ResponseWriter, r *http.Request) {
@@ -90,11 +90,11 @@ func initializeLetters() []Letter {
 	return letters
 }
 
-func initializeCurrentWord(n int) string {
-	var s string
+func initializeCurrentWord(n int) []string {
+	var s []string
 
 	for i := 0; i < n; i++ {
-		s += "_"
+		s = append(s, "_")
 	}
 
 	return s
