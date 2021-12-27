@@ -107,6 +107,12 @@ func playHandler(w http.ResponseWriter, r *http.Request) {
 			state.Errors++
 		}
 
+		if isWordFound(state.CurrentWord) {
+			for i, v := range state.Letters {
+				state.Letters[i] = Letter{Value: v.Value, Used: true}
+			}
+		}
+
 		if state.Errors == 6 {
 			for i, v := range state.Letters {
 				state.Letters[i] = Letter{Value: v.Value, Used: true}
@@ -170,6 +176,15 @@ func getCompleteWord(w string) []string {
 	}
 
 	return s
+}
+
+func isWordFound(word []string) bool {
+	for _, letter := range word {
+		if letter == "_" {
+			return false
+		}
+	}
+	return true
 }
 
 // ┌────────────────────────────────────────────────────────────┐
