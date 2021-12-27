@@ -23,11 +23,11 @@
     <div class="flex">
         {{range .Letters}}
             {{if .Used}}
-                <button class="letter" disabled>{{.Value}}</button>
+                <button class="letter selectable" disabled>{{.Value}}</button>
             {{else}}
                 <form method="POST" action="/play">
                     <input name="letter" type="hidden" value="{{.Value}}">
-                    <button class="letter" type="submit">{{.Value}}</button>
+                    <button class="letter selectable" type="submit">{{.Value}}</button>
                 </form>
             {{end}}
         {{end}}
