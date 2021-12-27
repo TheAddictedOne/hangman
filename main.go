@@ -31,6 +31,7 @@ type State struct {
 	Letters      []Letter
 	Errors       int
 	CurrentWord  []string
+	GameOver     string
 }
 
 // ┌────────────────────────────────────────────────────────────┐
@@ -77,6 +78,7 @@ func playHandler(w http.ResponseWriter, r *http.Request) {
 		state.Letters = initializeLetters()
 		state.Errors = 0
 		state.CurrentWord = initializeCurrentWord(word)
+		state.GameOver = ""
 		page.Execute(w, state)
 
 	// ┌────────────────────────────────┐
@@ -107,17 +109,19 @@ func playHandler(w http.ResponseWriter, r *http.Request) {
 			state.Errors++
 		}
 
-		if isWordFound(state.CurrentWord) {
+		switch isGameOver(state.CurrentWord, state.Errors) {
+		case 2:
 			for i, v := range state.Letters {
 				state.Letters[i] = Letter{Value: v.Value, Used: true}
 			}
-		}
-
-		if state.Errors == 6 {
-			for i, v := range state.Letters {
-				state.Letters[i] = Letter{Value: v.Value, Used: true}
-			}
+			state.GameOver = "You lose! Game over"
 			state.CurrentWord = getCompleteWord(state.CompleteWord)
+
+		case 1:
+			for i, v := range state.Letters {
+				state.Letters[i] = Letter{Value: v.Value, Used: true}
+			}
+			state.GameOver = "You win! Game over"
 		}
 
 		page.Execute(w, state)
@@ -178,13 +182,17 @@ func getCompleteWord(w string) []string {
 	return s
 }
 
-func isWordFound(word []string) bool {
+func isGameOver(word []string, errors int) int {
+	if errors == 6 {
+		return 2
+	}
+
 	for _, letter := range word {
 		if letter == "_" {
-			return false
+			return 0
 		}
 	}
-	return true
+	return 1
 }
 
 // ┌────────────────────────────────────────────────────────────┐

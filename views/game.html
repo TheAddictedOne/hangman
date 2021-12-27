@@ -13,8 +13,8 @@
     </button>
 
     <h1>Theme : {{.Level}}</h1>
-    {{if eq .Errors 6}}
-        <div>Game over!</div>
+    {{if .GameOver}}
+        <div>{{.GameOver}}</div>
     {{end}}
     <div class="Hangman error-{{.Errors}}"></div>
 
