@@ -10,7 +10,15 @@ import (
 	"time"
 )
 
-var state State
+// ┌────────────────────────────────────────────────────────────┐
+// │ Globals				             						│
+// └────────────────────────────────────────────────────────────┘
+
+var state State // This is the state of ze gaaaaaame
+
+// ┌────────────────────────────────────────────────────────────┐
+// │ Structs				             						│
+// └────────────────────────────────────────────────────────────┘
 
 type Letter struct {
 	Value string
@@ -25,18 +33,27 @@ type State struct {
 	CurrentWord  []string
 }
 
+// ┌────────────────────────────────────────────────────────────┐
+// │ Route handlers			             						│
+// └────────────────────────────────────────────────────────────┘
+
 func homeHandler(w http.ResponseWriter, r *http.Request) {
 	page := template.Must(template.ParseFiles("views/index.html"))
-
 	page.Execute(w, state)
 }
 
 func selectLevelHandler(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 
+	// ┌────────────────────────────────┐
+	// │ Show available levels			│
+	// └────────────────────────────────┘
 	case http.MethodGet:
 		http.ServeFile(w, r, "views/select-level.html")
 
+	// ┌────────────────────────────────┐
+	// │ Set the level in global state	│
+	// └────────────────────────────────┘
 	case http.MethodPost:
 		r.ParseForm()
 		state.Level = r.FormValue("level")
@@ -50,6 +67,9 @@ func selectLevelHandler(w http.ResponseWriter, r *http.Request) {
 func playHandler(w http.ResponseWriter, r *http.Request) {
 	page := template.Must(template.ParseFiles("views/game.html"))
 
+	// ┌────────────────────────────────┐
+	// │ Initiliaze the game			│
+	// └────────────────────────────────┘
 	switch r.Method {
 	case http.MethodGet:
 		word := getNewWord(state.Level)
@@ -59,17 +79,22 @@ func playHandler(w http.ResponseWriter, r *http.Request) {
 		state.CurrentWord = initializeCurrentWord(word)
 		page.Execute(w, state)
 
+	// ┌────────────────────────────────┐
+	// │ Read the letter sent by player │
+	// └────────────────────────────────┘
 	case http.MethodPost:
 		r.ParseForm()
 		letter := r.FormValue("letter")
 		word := strings.ToLower(state.CompleteWord)
 		isError := true
 
+		// Replace "_" with the letter from the player, if found
 		for i, v := range word {
 			if string(v) == letter {
 				isError = false
 				state.CurrentWord[i] = letter
 			}
+			// If all letters from the word have been checked, the letter has not been found isError stays "true"
 		}
 
 		for i, v := range state.Letters {
@@ -86,6 +111,10 @@ func playHandler(w http.ResponseWriter, r *http.Request) {
 		page.Execute(w, state)
 	}
 }
+
+// ┌────────────────────────────────────────────────────────────┐
+// │ Utilities				             						│
+// └────────────────────────────────────────────────────────────┘
 
 func getNewWord(level string) string {
 	file, _ := os.Open("files/" + level + ".txt")
@@ -128,14 +157,31 @@ func initializeCurrentWord(w string) []string {
 	return s
 }
 
+// ┌────────────────────────────────────────────────────────────┐
+// │ Main					             						│
+// └────────────────────────────────────────────────────────────┘
+
 func main() {
+	// ┌────────────────────────────────┐
+	// │ Initiliaze						│
+	// └────────────────────────────────┘
 	state.Level = "jrpgs"
 
+	// ┌────────────────────────────────┐
+	// │ Serve static files				│
+	// └────────────────────────────────┘
 	fileserver := http.FileServer(http.Dir("./static"))
 	http.Handle("/static/", http.StripPrefix("/static", fileserver))
 
+	// ┌────────────────────────────────┐
+	// │ Routes							│
+	// └────────────────────────────────┘
 	http.HandleFunc("/", homeHandler)
 	http.HandleFunc("/select-level", selectLevelHandler)
 	http.HandleFunc("/play", playHandler)
+
+	// ┌────────────────────────────────┐
+	// │ Start the server				│
+	// └────────────────────────────────┘
 	http.ListenAndServe(":8080", nil)
 }
