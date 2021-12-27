@@ -108,6 +108,12 @@ func playHandler(w http.ResponseWriter, r *http.Request) {
 			state.Errors++
 		}
 
+		if state.Errors == 6 {
+			for i, v := range state.Letters {
+				state.Letters[i] = Letter{Value: v.Value, Used: true}
+			}
+		}
+
 		page.Execute(w, state)
 	}
 }

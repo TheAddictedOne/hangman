@@ -14,6 +14,10 @@
 
     <h1>Theme : {{.Level}}</h1>
     <h2>{{.CompleteWord}}</h2>
+    {{if eq .Errors 6}}
+        <div>Game over!</div>
+    {{end}}
+    <div class="Hangman error-{{.Errors}}"></div>
 
     <h1>Letters</h1>
     <div class="flex">
@@ -29,7 +33,7 @@
         {{end}}
     </div>
 
-    <h1>Game to find (errors: {{.Errors}})</h1>
+    <h1>Game to find (errors: {{.Errors}} / 6)</h1>
     <div class="flex">
         {{range .CurrentWord}}
             {{if eq . " " }}

@@ -74,3 +74,17 @@ button:hover {
     flex-wrap: wrap;
     justify-content: center;
 }
+
+.Hangman {
+    position: relative;
+    background-image: url("/static/hangman.png");
+    width: 75px;
+    height: 200px;
+    overflow: hidden;
+}
+.Hangman.error-1 { background-position: -75px; }
+.Hangman.error-2 { background-position: -150px; }
+.Hangman.error-3 { background-position: -225px; }
+.Hangman.error-4 { background-position: -300px; }
+.Hangman.error-5 { background-position: -375px; }
+.Hangman.error-6 { background-position: -450px; }
