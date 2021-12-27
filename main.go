@@ -85,11 +85,10 @@ func playHandler(w http.ResponseWriter, r *http.Request) {
 	case http.MethodPost:
 		r.ParseForm()
 		letter := r.FormValue("letter")
-		word := strings.ToLower(state.CompleteWord)
 		isError := true
 
 		// Replace "_" with the letter from the player, if found
-		for i, v := range word {
+		for i, v := range state.CompleteWord {
 			if string(v) == letter {
 				isError = false
 				state.CurrentWord[i] = letter
@@ -112,6 +111,7 @@ func playHandler(w http.ResponseWriter, r *http.Request) {
 			for i, v := range state.Letters {
 				state.Letters[i] = Letter{Value: v.Value, Used: true}
 			}
+			state.CurrentWord = getCompleteWord(state.CompleteWord)
 		}
 
 		page.Execute(w, state)
@@ -134,7 +134,7 @@ func getNewWord(level string) string {
 	rand.Seed(time.Now().UnixNano())
 	num := rand.Intn(len(words))
 
-	return words[num]
+	return strings.ToLower(words[num])
 }
 
 func initializeLetters() []Letter {
@@ -158,6 +158,15 @@ func initializeCurrentWord(w string) []string {
 		} else {
 			s = append(s, "_")
 		}
+	}
+
+	return s
+}
+
+func getCompleteWord(w string) []string {
+	var s []string
+	for _, letter := range w {
+		s = append(s, string(letter))
 	}
 
 	return s
